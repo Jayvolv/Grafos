@@ -31,20 +31,53 @@ def arch_to_graph (arch : str): #função auxiliar para ler o arquivo
     
     return m, l
 
-class graph ():
-    def __init__ (self, matrix : int, list_ : int):
-        self.matrix = matrix
-        self.list_ = list_
-        self.vec_num = len(self.matrix) + 1
-
-    def validation (self, vertices : int):
-        for i in vertices:
-            if i > self.vec_num or i < 1:
-                return False
-
-        return True
+def sorted_insert (self, edge : list):
+    if not (self.edges):
+        self.edges.append(edge)
+        return
     
-    @classmethod
-    def from_a_file (cls, arch : str): #método que permite a construção a partir de um arquivo
-        matrix, list_ = arch_to_graph(arch)
-        return cls(matrix, list_)
+    i = 0
+    while self.edges[i][0][0] < edge[0][0]: #enquanto tiver menores na lista
+        i = i + 1
+
+        if i == len(self.edges):
+            self.edges.append(edge)
+            return
+
+    if self.edges[i][0][0] > edge[0][0]:
+        self.edges.insert(i, edge)
+        return
+    
+    else:
+        while (self.edges[i][0][0] == edge[0][0] and self.edges[i][0][1] < edge[0][1]):
+            i = i + 1
+
+            if i == len(self.edges):
+                self.edges.append(edge)
+                return
+            
+        self.edges.insert(i, edge)
+        return
+
+def to_gdf (name : str, vec_num : int, edges : int):
+    aux = open(name, 'w')
+
+    aux.write("nodedef>name VARCHAR,label VARCHAR\n")
+    for v in range (1, vec_num + 1):
+        aux.write(f"{v},{v}\n")
+
+    aux.write("edgedef>node1 VARCHAR,node2 VARCHAR,directed BOOLEAN,color VARCHAR\n")
+    for i in edges:
+        if i[1] == 'blue':
+            aux.write(f"{i[0][0]},{i[0][1]},false,'0,0,255'\n")
+        
+        elif i[1] == 'red':
+            aux.write(f"{i[0][0]},{i[0][1]},false,'255,0,0'\n")
+        
+        elif i[1] == 'green':
+            aux.write(f"{i[0][0]},{i[0][1]},false,'0,255,0'\n")
+        
+        else:
+            aux.write(f"{i[0][0]},{i[0][1]},false,'255,255,0'\n")
+    
+    aux.close()
