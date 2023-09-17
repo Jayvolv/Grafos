@@ -3,7 +3,7 @@ def arch_to_graph (arch : str): #função auxiliar para ler o arquivo
     #lendo o arquivo:
     aux = open(arch, 'r')
     lines = aux.readlines()
-    vec_num = int(lines[0][0])
+    vec_num = int(lines[0])
     aux.close()
 
     #montando a matriz:
