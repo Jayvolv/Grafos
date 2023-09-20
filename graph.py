@@ -2,9 +2,10 @@ from search import breadth_first_search, depth_first_search
 from auxx import *
 
 class graph ():
-    def __init__ (self, matrix : int, list_ : int):
+    def __init__ (self, matrix : int, list_ : int, edges : list):
         self.matrix = matrix
         self.list_ = list_
+        self.edges_list = edges
         self.vec_num = len(self.matrix) + 1
 
     def validation (self, vertices : int):
@@ -24,12 +25,15 @@ class graph ():
 
     def eccentricity(self):
         eccentricity = []
+        self.m_distances = []
         for i in range(self.vec_num):
             BFS_ = breadth_first_search(matrix=self.matrix, list_=self.list_)
             BFS_.BFS(i)
-            
-            eccentricity.append(max(BFS_.get_nodes_level()))
+            nodes_levels = BFS_.get_nodes_level()
+            self.m_distances.append(sum(nodes_levels)/(len(nodes_levels)))
+            eccentricity.append(max(nodes_levels))
         
+        self.m_distances = sum(self.m_distances)/len(self.m_distances)
         self.radius = min(eccentricity)
         self.diameter = max(eccentricity)
         
@@ -37,7 +41,10 @@ class graph ():
         
         return self.radius, self.diameter
     
+    def m_distance(self):
+        return self.m_distances
+
     @classmethod
     def from_a_file (cls, arch : str): #método que permite a construção a partir de um arquivo
-        matrix, list_ = arch_to_graph(arch)
-        return cls(matrix, list_)
+        matrix, list_, edges = arch_to_graph(arch)
+        return cls(matrix, list_, edges)
