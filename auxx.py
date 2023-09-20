@@ -29,7 +29,15 @@ def arch_to_graph (arch : str): #função auxiliar para ler o arquivo
 
         l.append([i - 1, aux])
     
-    return m, l
+    #montando edge_list
+    e = []
+
+    for i in l:
+        for j in i[1]:
+            e.append((i[0],j))
+
+    
+    return m, l, e
 
 def sorted_insert (self, edge : list):
     if not (self.edges):
