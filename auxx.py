@@ -34,7 +34,8 @@ def arch_to_graph (arch : str): #função auxiliar para ler o arquivo
 
     for i in l:
         for j in i[1]:
-            e.append((i[0],j))
+            if sorted((i[0],j)) not in e:
+                e.append(sorted((i[0],j)))
 
     
     return m, l, e
