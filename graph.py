@@ -30,7 +30,7 @@ class graph ():
             BFS_ = breadth_first_search(matrix=self.matrix, list_=self.list_)
             BFS_.BFS(i)
             nodes_levels = BFS_.get_nodes_level()
-            self.m_distances.append(sum(nodes_levels)/(len(nodes_levels)))
+            self.m_distances.append(sum(nodes_levels)/(len(nodes_levels)-1))
             eccentricity.append(max(nodes_levels))
         
         self.m_distances = sum(self.m_distances)/len(self.m_distances)
@@ -43,6 +43,24 @@ class graph ():
     
     def m_distance(self):
         return self.m_distances
+    
+    def are_neigh (self, v_1 : int, v_2 : int):
+        if not self.validation([v_1, v_2]):
+            return False
+
+        if v_1 == v_2: #por ser um grafo simples
+            return False
+
+        else:
+            aux = [v_1, v_2]
+            aux = sorted(aux)
+            
+            #testando de há aresta entre os vértices:
+            if self.matrix[aux[0] - 1][aux[1] - aux[0] - 1] == 1:
+                return True
+
+            else:
+                return False
 
     @classmethod
     def from_a_file (cls, arch : str): #método que permite a construção a partir de um arquivo
